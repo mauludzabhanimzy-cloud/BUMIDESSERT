@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f766e">
+  <title>BUMI DESSERT — Dashboard Keuangan</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="KasToko Beranda">
+        <span class="brand-mark">K</span><span><strong>BUMI DESSERT</strong><small>Keuangan Bumi</small></span>
+      </a>
+      <div class="nav-label">MENU UTAMA</div>
+      <nav class="nav">
+        <button class="nav-link active" data-view="dashboard"><span>▦</span> Dashboard</button>
+        <button class="nav-link" data-view="transactions"><span>⇄</span> Input Transaksi</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="status-dot"></div>
+        <div><strong id="connectionText">Belum terhubung</strong><small>Google Spreadsheet</small></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
+        <div><p class="eyebrow">MANAJEMEN KEUANGAN</p><h1 id="pageTitle">BUMI DESSERT</h1></div>
+        <div class="topbar-right"><span class="today-pill" id="todayLabel">Hari ini</span><button class="button button-primary" id="topAddBtn">＋ Input Transaksi</button></div>
+      </header>
+
+      <section class="view active" id="dashboardView">
+        <div class="welcome-row dashboard-controls">
+          <div><h2>Ringkasan keuangan</h2><p id="dashboardPeriodLabel">Ringkasan keuangan bulan ini.</p></div>
+          <div class="dashboard-actions"><label class="month-select-label" for="dashboardMonth">Periode</label><select id="dashboardMonth" aria-label="Pilih bulan dashboard"></select><button class="button button-light" id="refreshBtn">↻ Perbarui data</button></div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card stat-balance"><div class="stat-top"><span>Laba / Saldo Bersih</span><span class="stat-icon">◈</span></div><strong id="balanceValue">Rp0</strong><small>Akumulasi pemasukan dikurangi pengeluaran</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Total Pemasukan</span><span class="stat-icon green">↗</span></div><strong id="incomeValue">Rp0</strong><small class="positive">Uang masuk</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Total Pengeluaran</span><span class="stat-icon red">↘</span></div><strong id="expenseValue">Rp0</strong><small class="negative">Uang keluar</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Jumlah Transaksi</span><span class="stat-icon purple">≋</span></div><strong id="countValue">0</strong><small>Seluruh transaksi tercatat</small></article>
+        </div>
+        <section class="panel chart-panel">
+          <div class="panel-heading"><div><h3>Grafik pemasukan, pengeluaran & laba</h3><p>Perbandingan keuangan setiap bulan</p></div><span class="panel-badge">12 bulan</span></div>
+          <div class="chart-wrap"><canvas id="cashflowChart" aria-label="Grafik pemasukan, pengeluaran, dan laba"></canvas><div class="chart-empty hidden" id="chartEmpty">Grafik akan tampil setelah data tersedia.</div></div>
+        </section>
+        <section class="panel recent-panel">
+          <div class="panel-heading"><div><h3>Transaksi terbaru</h3><p>Ringkasan catatan terbaru</p></div><button class="text-button" data-view="transactions">Input transaksi →</button></div>
+          <div class="table-wrap"><table><thead><tr><th>TANGGAL</th><th>JENIS</th><th>KETERANGAN</th><th>METODE</th><th class="align-right">JUMLAH</th></tr></thead><tbody id="recentRows"><tr><td colspan="5" class="empty-cell">Memuat data...</td></tr></tbody></table></div>
+        </section>
+      </section>
+
+      <section class="view" id="transactionsView">
+        <div class="welcome-row">
+          <div><h2>Input Transaksi</h2><p>Catat pemasukan dan pengeluaran secara sederhana.</p></div>
+        </div>
+        <div class="input-cards">
+          <section class="panel input-panel income-panel">
+            <div class="input-heading">
+              <span class="input-symbol income-symbol">↗</span>
+              <div><h3>PEMASUKAN</h3><p>Catat uang yang masuk ke kas toko.</p></div>
+            </div>
+            <form id="incomeForm" class="simple-form" data-type="pemasukan">
+              <label>Nama<input type="text" name="description" placeholder="Nama pemasukan" maxlength="180" required></label>
+              <label>Nominal (Rp)<input type="number" name="amount" min="1" step="1" placeholder="Masukkan nominal" required></label>
+              <label>Tanggal<input type="date" name="date" required></label>
+              <button type="submit" class="button button-primary submit-button">Simpan Pemasukan</button>
+            </form>
+          </section>
+          <section class="panel input-panel expense-panel">
+            <div class="input-heading">
+              <span class="input-symbol expense-symbol">↘</span>
+              <div><h3>PENGELUARAN</h3><p>Catat uang yang keluar dari kas toko.</p></div>
+            </div>
+            <form id="expenseForm" class="simple-form" data-type="pengeluaran">
+              <label>Nama<input type="text" name="description" placeholder="Nama pengeluaran" maxlength="180" required></label>
+              <label>Nominal (Rp)<input type="number" name="amount" min="1" step="1" placeholder="Masukkan nominal" required></label>
+              <label>Tanggal<input type="date" name="date" required></label>
+              <button type="submit" class="button button-expense submit-button">Simpan Pengeluaran</button>
+            </form>
+          </section>
+        </div>
+      </section>
+      <footer class="footer">KasToko <span>•</span> Pembukuan lebih rapi, keputusan lebih pasti.</footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="loading-overlay hidden" id="loadingOverlay"><div class="loader"></div><strong id="loadingText">Memproses...</strong></div>
+</body>
+</html>
