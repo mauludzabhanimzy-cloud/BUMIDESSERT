@@ -3,7 +3,7 @@
  * Isi API_URL dengan URL Web App Google Apps Script yang berakhir /exec.
  * JSONP dipakai agar frontend Live Server bisa berkomunikasi dengan Apps Script.
  */
-const API_URL = "https://script.google.com/macros/s/AKfycbxk11s6JpI9n76sdW9gTOR8J68rOivfrbwXtTYERVMujZaeF8RDF5TL8ezsH_TAwICH9w/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxd7CcdyYvc4Po8W2B8o5CXFGIGQp4P8NRZXJpL-2kSifYk-c_cw99J20PqrjLA43Y/exec";
 const state = { transactions: [], chart: null };
 const $ = id => document.getElementById(id);
 const rupiah = n => new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(Number(n)||0);
